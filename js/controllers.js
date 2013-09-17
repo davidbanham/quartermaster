@@ -7,6 +7,9 @@
   app.controller("FieldMarshalCtrl", function($scope, $store, $http, FieldMarshal) {
     var mungeSlavesToProcs;
     $store.bind($scope, "fieldmarshalInfo");
+    if (($scope.fieldmarshalInfo.port == null) || $scope.fieldmarshalInfo.port === '') {
+      $scope.fieldmarshalInfo.port = 4001;
+    }
     $http.defaults.headers.common.authorization = "Basic " + (btoa("quartermaster:" + $scope.fieldmarshalInfo.pass));
     mungeSlavesToProcs = function(slaves) {
       var name, pid, proc, slave, _results;
