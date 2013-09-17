@@ -5,7 +5,7 @@
   app = angular.module('CoffeeModule');
 
   app.controller("FieldMarshalCtrl", function($scope, $store, $http, $location, FieldMarshal) {
-    var intervals, mungeSlavesToProcs;
+    var getManifest, intervals, mungeSlavesToProcs;
     $store.bind($scope, "fieldmarshalInfo");
     if (($scope.fieldmarshalInfo.port == null) || $scope.fieldmarshalInfo.port === '') {
       $scope.fieldmarshalInfo.port = 4001;
@@ -54,7 +54,44 @@
         return $scope.slaves = data;
       });
     };
+    getManifest = function() {
+      return FieldMarshal.get({
+        action: 'manifest',
+        host: "" + $scope.fieldmarshalInfo.host + ":" + $scope.fieldmarshalInfo.port
+      }, function(manifest) {
+        var data, name, proc, running, _i, _len, _ref;
+        for (name in manifest) {
+          data = manifest[name];
+          if ($scope.allProcs == null) {
+            continue;
+          }
+          if (name[0] === '$') {
+            continue;
+          }
+          running = 0;
+          _ref = $scope.allProcs;
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            proc = _ref[_i];
+            if (proc.repo === name && proc.opts.commit === data.opts.commit) {
+              running++;
+            }
+          }
+          data.running = running;
+        }
+        return $scope.manifest = manifest;
+      });
+    };
+    $scope.getRawManifest = function() {
+      return FieldMarshal.get({
+        action: 'manifest',
+        host: "" + $scope.fieldmarshalInfo.host + ":" + $scope.fieldmarshalInfo.port
+      }, function(manifest) {
+        return $scope.rawManifest = JSON.stringify(manifest, null, '  ');
+      });
+    };
     intervals = [];
+    intervals.push(setInterval(getManifest, 3000));
+    getManifest();
     intervals.push(setInterval($scope.getSlaves, 3000));
     $scope.getSlaves();
     $scope.$on('$destroy', function(e) {
@@ -66,6 +103,15 @@
       }
       return _results;
     });
+    $scope.conditionalStyle = function(instances, running) {
+      if (instances > running) {
+        return "instancesBelow";
+      }
+      if (instances < running) {
+        return "instancesAbove";
+      }
+      return "";
+    };
     $scope.sort = {
       column: 'port',
       descending: 'true'

@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-md-12">
+    <button ng-click="getRawManifest()" ng-show="!rawManifest">Get Raw Manifest</button>
+    <button ng-click="rawManifest = undefined" ng-show="rawManifest">Dismiss</button>
+    <textarea rows=100 cols=100 ng-show="rawManifest">{{rawManifest}}</textarea>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="well col-md-4" ng-repeat="(name, data) in manifest" ng-class="conditionalStyle(data.instances, data.running)">
+    <h3>{{name}}</h3>
+    <p>Specced: {{data.instances}}</p>
+    <p>Running: {{data.running}}</p>
+  </div>
+</div>

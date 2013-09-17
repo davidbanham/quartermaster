@@ -29,13 +29,42 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarsh
         slave.numProcs = Object.keys(slave.processes).length
       $scope.slaves = data
 
+  getManifest = ->
+    FieldMarshal.get
+      action: 'manifest'
+      host: "#{$scope.fieldmarshalInfo.host}:#{$scope.fieldmarshalInfo.port}"
+    , (manifest) ->
+      for name, data of manifest
+        continue if !$scope.allProcs?
+        continue if name[0] is '$'
+        running = 0
+        for proc in $scope.allProcs
+          running++ if proc.repo is name and proc.opts.commit is data.opts.commit
+        data.running = running
+      $scope.manifest = manifest
+
+  $scope.getRawManifest = ->
+    FieldMarshal.get
+      action: 'manifest'
+      host: "#{$scope.fieldmarshalInfo.host}:#{$scope.fieldmarshalInfo.port}"
+    , (manifest) ->
+      $scope.rawManifest = JSON.stringify manifest, null, '  '
+
   intervals = []
+
+  intervals.push setInterval getManifest, 3000 #tonight we're going to poll it like it's nineteen ninety nine
+  getManifest()
 
   intervals.push setInterval $scope.getSlaves, 3000 #tonight we're going to poll it like it's nineteen ninety nine
   $scope.getSlaves()
 
   $scope.$on '$destroy', (e) ->
     clearInterval interval for interval in intervals
+
+  $scope.conditionalStyle = (instances, running) ->
+    return "instancesBelow" if instances > running
+    return "instancesAbove" if instances < running
+    return ""
 
   $scope.sort =
     column: 'port'
