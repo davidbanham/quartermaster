@@ -23,6 +23,9 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, FieldMarshal) ->
     , (data, status, headers, config) ->
       mungeSlavesToProcs(data)
       $scope.slavesStr = JSON.stringify(data, null, "  ")
+      for name, slave of data
+        continue if name[0] is '$'
+        slave.numProcs = Object.keys(slave.processes).length
       $scope.slaves = data
 
   setInterval $scope.getSlaves, 3000 #tonight we're going to poll it like it's nineteen ninety nine

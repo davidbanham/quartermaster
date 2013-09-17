@@ -38,8 +38,16 @@
         action: 'slaves',
         host: "" + $scope.fieldmarshalInfo.host + ":" + $scope.fieldmarshalInfo.port
       }, function(data, status, headers, config) {
+        var name, slave;
         mungeSlavesToProcs(data);
         $scope.slavesStr = JSON.stringify(data, null, "  ");
+        for (name in data) {
+          slave = data[name];
+          if (name[0] === '$') {
+            continue;
+          }
+          slave.numProcs = Object.keys(slave.processes).length;
+        }
         return $scope.slaves = data;
       });
     };
