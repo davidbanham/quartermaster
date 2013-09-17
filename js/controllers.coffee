@@ -29,8 +29,13 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarsh
         slave.numProcs = Object.keys(slave.processes).length
       $scope.slaves = data
 
-  setInterval $scope.getSlaves, 3000 #tonight we're going to poll it like it's nineteen ninety nine
+  intervals = []
+
+  intervals.push setInterval $scope.getSlaves, 3000 #tonight we're going to poll it like it's nineteen ninety nine
   $scope.getSlaves()
+
+  $scope.$on '$destroy', (e) ->
+    clearInterval interval for interval in intervals
 
   $scope.sort =
     column: 'port'

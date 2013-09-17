@@ -5,7 +5,7 @@
   app = angular.module('CoffeeModule');
 
   app.controller("FieldMarshalCtrl", function($scope, $store, $http, $location, FieldMarshal) {
-    var mungeSlavesToProcs;
+    var intervals, mungeSlavesToProcs;
     $store.bind($scope, "fieldmarshalInfo");
     if (($scope.fieldmarshalInfo.port == null) || $scope.fieldmarshalInfo.port === '') {
       $scope.fieldmarshalInfo.port = 4001;
@@ -54,8 +54,18 @@
         return $scope.slaves = data;
       });
     };
-    setInterval($scope.getSlaves, 3000);
+    intervals = [];
+    intervals.push(setInterval($scope.getSlaves, 3000));
     $scope.getSlaves();
+    $scope.$on('$destroy', function(e) {
+      var interval, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = intervals.length; _i < _len; _i++) {
+        interval = intervals[_i];
+        _results.push(clearInterval(interval));
+      }
+      return _results;
+    });
     $scope.sort = {
       column: 'port',
       descending: 'true'
