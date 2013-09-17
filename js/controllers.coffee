@@ -1,9 +1,10 @@
 app = angular.module('CoffeeModule')
 
-app.controller "FieldMarshalCtrl", ($scope, $store, $http, FieldMarshal) ->
+app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarshal) ->
 
   $store.bind($scope,"fieldmarshalInfo")
   $scope.fieldmarshalInfo.port = 4001 if !$scope.fieldmarshalInfo.port? or $scope.fieldmarshalInfo.port is ''
+  $location.path 'settings' if !$scope.fieldmarshalInfo.host? or $scope.fieldmarshalInfo.host is ''
 
   $http.defaults.headers.common.authorization = "Basic #{btoa("quartermaster:" + $scope.fieldmarshalInfo.pass)}"
 

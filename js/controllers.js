@@ -4,11 +4,14 @@
 
   app = angular.module('CoffeeModule');
 
-  app.controller("FieldMarshalCtrl", function($scope, $store, $http, FieldMarshal) {
+  app.controller("FieldMarshalCtrl", function($scope, $store, $http, $location, FieldMarshal) {
     var mungeSlavesToProcs;
     $store.bind($scope, "fieldmarshalInfo");
     if (($scope.fieldmarshalInfo.port == null) || $scope.fieldmarshalInfo.port === '') {
       $scope.fieldmarshalInfo.port = 4001;
+    }
+    if (($scope.fieldmarshalInfo.host == null) || $scope.fieldmarshalInfo.host === '') {
+      $location.path('settings');
     }
     $http.defaults.headers.common.authorization = "Basic " + (btoa("quartermaster:" + $scope.fieldmarshalInfo.pass));
     mungeSlavesToProcs = function(slaves) {
