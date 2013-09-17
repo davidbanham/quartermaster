@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Tue 17 Sep 2013:v5
+# Tue 17 Sep 2013:v6
 
 CACHE:
 index.html
@@ -27,7 +27,7 @@ js/jquery.min.map
 js/pouchdb-nightly.min.js
 js/services.coffee
 js/services.js
-views/main.html
+views/slaves.html
 views/processes.html
 views/settings.html
 
