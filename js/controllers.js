@@ -25,6 +25,7 @@
             proc = _ref[pid];
             proc.slave = name;
             proc.port = proc.opts.env.PORT;
+            proc.commit = proc.opts.commit;
             _results1.push($scope.allProcs.push(proc));
           }
           return _results1;

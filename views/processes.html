@@ -8,7 +8,7 @@
         <th ng-class="selectedCls('slave')", ng-click="changeSorting('slave')">Slave</th>
         <th ng-class="selectedCls('status')", ng-click="changeSorting('status')">Status</th>
         <th ng-class="selectedCls('opts.env.PORT')", ng-click="changeSorting('opts.env.PORT')">Port</th>
-        <th>Commit</th>
+        <th ng-class="selectedCls('opts.commit')", ng-click="changeSorting('opts.commit')">Commit</th>
         <th>Controls</th>
       </tr>
       <tr>
@@ -17,6 +17,7 @@
         <th><input type="text", ng-model="filter.slave", placeholder="filter"</th>
         <th><input type="text", ng-model="filter.status", placeholder="filter"</th>
         <th><input type="text", ng-model="filter.port", placeholder="filter"</th>
+        <th><input type="text", ng-model="filter.commit", placeholder="filter"</th>
         <th></th>
       </th>
     </thead>
@@ -27,7 +28,7 @@
         <td>{{proc.slave}}</td>
         <td>{{proc.status}}</td>
         <td>{{proc.port}}</td>
-        <td ng-click="lickMyBalls('foo')">{{proc.opts.commit}}</td>
+        <td>{{proc.opts.commit}}</td>
         <td ng-click="stop(proc.slave, proc.id)"><button class="btn btn-danger">Stop</button></td>
       </tr>
     </tbody>

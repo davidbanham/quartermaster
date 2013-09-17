@@ -13,6 +13,7 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, FieldMarshal) ->
       for pid, proc of slave.processes
         proc.slave = name
         proc.port = proc.opts.env.PORT
+        proc.commit = proc.opts.commit
         $scope.allProcs.push proc
 
   $scope.getSlaves = ->
