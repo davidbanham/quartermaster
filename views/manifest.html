@@ -7,7 +7,7 @@
 </div>
 <br>
 <div class="row">
-  <div class="well col-md-4" ng-repeat="(name, data) in manifest" ng-class="conditionalStyle(data.instances, data.running)">
+  <div class="well col-md-4" ng-repeat="(name, data) in manifest" ng-class="conditionalStyle(data.instances, data.running)" style="background-image:url('http://robohash.org/{{name}}.png?set=set3&size=110x110'); background-size: contain; background-repeat:no-repeat; background-position:right;">
     <h3>{{name}}</h3>
     <p>Specced: {{data.instances}}</p>
     <p>Running: {{data.running}}</p>
