@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# Tue 17 Sep 2013:v6
+# Tue 18 Sep 2013
 
 CACHE:
 index.html
@@ -7,6 +7,7 @@ css/bootstrap-theme.css
 css/bootstrap-theme.min.css
 css/bootstrap.css
 css/bootstrap.min.css
+css/custom.css
 fonts/glyphicons-halflings-regular.eot
 fonts/glyphicons-halflings-regular.svg
 fonts/glyphicons-halflings-regular.ttf
@@ -27,6 +28,7 @@ js/jquery.min.map
 js/pouchdb-nightly.min.js
 js/services.coffee
 js/services.js
+views/manifest.html
 views/slaves.html
 views/processes.html
 views/settings.html
