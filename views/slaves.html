@@ -1,4 +1,4 @@
-<div class="well col-md-4" ng-repeat="(name, slave) in slaves" style="background-image:url('http://robohash.org/{{name}}.png?size=110x110'); background-size: contain; background-repeat:no-repeat; background-position:right;">
+<div class="well col-md-4" ng-repeat="(name, slave) in slaves" style="background-image:url('http://robohash.org/{{name}}.png?size=110x110'); background-size: contain; background-repeat:no-repeat; background-position:right;" ng-class="slave.spawnable ? 'spawnable' : 'unspawnable'">
   <p>Name: {{name}}</p>
   <p>Load: {{slave.load}}</p>
   <p>IP: {{slave.ip}}</p>

@@ -5,3 +5,8 @@
 .instancesAbove {
   background-color: yellow;
 }
+
+.unspawnable {
+  opacity: 0.8;
+  background-color: yellow;
+}

@@ -1,4 +1,4 @@
-angular.module('CoffeeModule', ['localStorage', 'fieldMarshalService', 'ngResource'])
+angular.module('CoffeeModule', ['ngRoute', 'localStorage', 'fieldMarshalService', 'ngResource'])
 .config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/settings', {templateUrl: 'views/settings.html', controller: 'FieldMarshalCtrl'}).
