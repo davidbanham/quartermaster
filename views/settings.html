@@ -1,16 +1,32 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8">
-      <form role="form">
-        <div class="form-group">
-          <label for="fieldMarshalHost">Field Marshal Hostname</label>
-          <input class="form-control" ng-model="fieldmarshalInfo.host" id="fieldMarshalHost"></input>
-          <label for="fieldMarshalPort">Field Marshal Port (default 4001)</label>
-          <input class="form-control" ng-model="fieldmarshalInfo.port" id="fieldMarshalPort"></input>
-          <label>Field Marshal Password (stored in cleartext)</label>
-          <input class="form-control" ng-model="fieldmarshalInfo.pass" type="password"></input>
-        </div>
+      <div class="form-group">
+        Set active marshal
+        <select ng-model="fieldmarshalInfo.selected" ng-options="name for name in fieldmarshalInfo.marshalNames"></select>
       </div>
-    </form>
+      <div class="form-group">
+        Add new marshal
+        <br>
+        <label for="newfieldMarshalName">Name:</label>
+        <input class="form-control" ng-model="newMarshal.name" id="newFieldMarshalName">
+        <label for="newFieldMarshalHostName">{{newMarshal.name}} Hostname</label>
+        <input class="form-control" ng-model="newMarshal.host" id="newFieldMarshalHost">
+        <label for="newFieldMarshalPort">{{newMarshal.name}} Port</label>
+        <input class="form-control" ng-model="newMarshal.port" id="newFieldMarshalPort">
+        <label for="newFieldMarshalPass">{{newMarshal.name}} Password (stored in cleartext)</label>
+        <input class="form-control" ng-model="newMarshal.pass" id="newFieldMarshalPass" type="password">
+        <button ng-click="addFieldMarshal(newMarshal)">Add</button>
+      </div>
+      Edit existing marshals:
+      <div class="form-group" ng-repeat="(name, marshal) in fieldmarshalInfo.marshals">
+        <label for="fieldMarshalHost">{{name}} Hostname</label>
+        <input class="form-control" ng-model="marshal.host" id="fieldMarshalHost">
+        <label for="fieldMarshalPort">{{name}} Port (default 4001)</label>
+        <input class="form-control" ng-model="marshal.port" id="fieldMarshalPort">
+        <label>{{name}} Password (stored in cleartext)</label>
+        <input class="form-control" ng-model="marshal.pass" type="password">
+      </div>
+    </div>
   </div>
 </div>

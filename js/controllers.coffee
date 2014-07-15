@@ -3,10 +3,24 @@ app = angular.module('CoffeeModule')
 app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarshal) ->
 
   $store.bind($scope,"fieldmarshalInfo")
-  $scope.fieldmarshalInfo.port = 4001 if !$scope.fieldmarshalInfo.port? or $scope.fieldmarshalInfo.port is ''
-  $location.path 'settings' if !$scope.fieldmarshalInfo.host? or $scope.fieldmarshalInfo.host is ''
 
-  $http.defaults.headers.common.authorization = "Basic #{btoa("quartermaster:" + $scope.fieldmarshalInfo.pass)}"
+  $scope.fieldmarshalInfo ?= {}
+  $scope.fieldmarshalInfo = {} if $scope.fieldmarshalInfo is ""
+
+  fieldmarshalInfo = $scope.fieldmarshalInfo
+
+  $scope.newMarshal =
+    port: 4001
+
+  fieldmarshalInfo.marshals ?= {}
+  fieldmarshalInfo.selected ?= ''
+
+  selected = fieldmarshalInfo.selected
+  $scope.currentMarshal = currentMarshal = fieldmarshalInfo.marshals[selected] or {}
+
+  $location.path 'settings' if !selected?
+
+  $http.defaults.headers.common.authorization = "Basic #{btoa("quartermaster:" + currentMarshal.pass)}"
 
   mungeSlavesToProcs = (slaves) ->
     $scope.allProcs = []
@@ -20,7 +34,7 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarsh
   $scope.getSlaves = ->
     FieldMarshal.get
       action: 'slaves'
-      host: "#{$scope.fieldmarshalInfo.host}:#{$scope.fieldmarshalInfo.port}"
+      host: "#{currentMarshal.host}:#{currentMarshal.port}"
     , (data, status, headers, config) ->
       mungeSlavesToProcs(data)
       $scope.slavesStr = JSON.stringify(data, null, "  ")
@@ -32,7 +46,7 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarsh
   getManifest = ->
     FieldMarshal.get
       action: 'manifest'
-      host: "#{$scope.fieldmarshalInfo.host}:#{$scope.fieldmarshalInfo.port}"
+      host: "#{currentMarshal.host}:#{currentMarshal.port}"
     , (manifest) ->
       for name, data of manifest
         continue if !$scope.allProcs?
@@ -46,7 +60,7 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarsh
   $scope.getRawManifest = ->
     FieldMarshal.get
       action: 'manifest'
-      host: "#{$scope.fieldmarshalInfo.host}:#{$scope.fieldmarshalInfo.port}"
+      host: "#{currentMarshal.host}:#{currentMarshal.port}"
     , (manifest) ->
       $scope.rawManifest = JSON.stringify manifest, null, '  '
 
@@ -81,7 +95,13 @@ app.controller "FieldMarshalCtrl", ($scope, $store, $http, $location, FieldMarsh
   $scope.stop = (slave, pid) ->
     FieldMarshal.save {
       action: 'stop'
-      host: "#{$scope.fieldmarshalInfo.host}:#{$scope.fieldmarshalInfo.port}"
+      host: "#{currentMarshal.host}:#{currentMarshal.port}"
       slave: slave
       ids: [pid]
     }
+
+  $scope.addFieldMarshal = (newMarshal) ->
+    $scope.fieldmarshalInfo.marshals[newMarshal.name] = newMarshal
+    $scope.fieldmarshalInfo.marshalNames = []
+    $scope.fieldmarshalInfo.marshalNames.push(name) for name, _ of $scope.fieldmarshalInfo.marshals
+
